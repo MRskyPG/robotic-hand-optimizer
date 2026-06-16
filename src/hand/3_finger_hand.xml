@@ -1,0 +1,79 @@
+<mujoco model="3_finger_hand">
+  <compiler angle="radian"/>
+
+  <option timestep="0.001"/>
+
+  <default>
+    <joint armature="0.01" damping="1" frictionloss="0.01"/>
+    <geom condim="6" friction="0.5" margin="0.001"/>
+  </default>
+
+  <asset>
+    <texture type="skybox" colorspace="auto" builtin="gradient" rgb1="0.9 0.9 0.9" rgb2="0.3 0.3 0.35" width="256" height="1536"/>
+  </asset>
+
+  <worldbody>
+    <geom name="ground" size="5 5 0.1" pos="0 0 -0.5" type="plane" friction="0.5 0.1 0.1" rgba="0.6 0.6 0.6 1"/>
+    <geom name="origin_marker" size="0.001" rgba="1 0 0 0.5"/>
+    <geom name="fingers_bbox" size="0.0376339 0.0432036 0.015" pos="0.00486615 0.00358528 0" quat="0.707107 0 0 0.707107" type="box" contype="0" conaffinity="0" rgba="0 1 0 0.2"/>
+    <light pos="0 0 10" dir="0 0 -1"/>
+    <body name="ID1_ROT" pos="-0.00649319 0.0292889 0" quat="0.442595 -0.551462 0.442595 0.551462">
+      <geom name="ID1_ROT_geom" size="0.0125 0.0175 0.015" type="box" rgba="0.5 0.8 0.5 0.5"/>
+      <body name="ID1_PART1" pos="0 0 0.015">
+        <joint name="ID1_PART1_joint" pos="0 0 0" axis="0 1 0" range="0 1.5708"/>
+        <geom name="ID1_PART1_geom" size="0.0125 0.02 0.03" pos="0 0 0.03" type="box" rgba="1 0.5 0.5 0.5"/>
+        <body name="ID1_PART2" pos="0 0 0.06">
+          <joint name="ID1_PART2_joint" pos="0 0 0" axis="0 1 0" range="0 1.5708"/>
+          <geom name="ID1_PART2_geom" size="0.0125 0.02 0.036" pos="0.0125 0 0.036" type="box" rgba="0.5 0.5 1 0.5"/>
+        </body>
+      </body>
+    </body>
+    <body name="ID2_ROT" pos="-0.0202677 -0.0221183 0" quat="0.284785 0.647223 0.284785 -0.647223">
+      <geom name="ID2_ROT_geom" size="0.0125 0.0175 0.015" type="box" rgba="0.5 0.8 0.5 0.5"/>
+      <body name="ID2_PART1" pos="0 0 0.015">
+        <joint name="ID2_PART1_joint" pos="0 0 0" axis="0 1 0" range="0 1.5708"/>
+        <geom name="ID2_PART1_geom" size="0.0125 0.02 0.03" pos="0 0 0.03" type="box" rgba="1 0.5 0.5 0.5"/>
+        <body name="ID2_PART2" pos="0 0 0.06">
+          <joint name="ID2_PART2_joint" pos="0 0 0" axis="0 1 0" range="0 1.5708"/>
+          <geom name="ID2_PART2_geom" size="0.0125 0.02 0.036" pos="0.0125 0 0.036" type="box" rgba="0.5 0.5 1 0.5"/>
+        </body>
+      </body>
+    </body>
+    <body name="ID3_ROT" pos="0.03 0 0" quat="0.707107 0 0.707107 0">
+      <geom name="ID3_ROT_geom" size="0.0125 0.0175 0.015" type="box" rgba="0.5 0.8 0.5 0.5"/>
+      <body name="ID3_PART1" pos="0 0 0.015">
+        <joint name="ID3_PART1_joint" pos="0 0 0" axis="0 1 0" range="0 1.5708"/>
+        <geom name="ID3_PART1_geom" size="0.0125 0.02 0.03" pos="0 0 0.03" type="box" rgba="1 0.5 0.5 0.5"/>
+        <body name="ID3_PART2" pos="0 0 0.06">
+          <joint name="ID3_PART2_joint" pos="0 0 0" axis="0 1 0" range="0 1.5708"/>
+          <geom name="ID3_PART2_geom" size="0.0125 0.02 0.036" pos="0.0125 0 0.036" type="box" rgba="0.5 0.5 1 0.5"/>
+        </body>
+      </body>
+    </body>
+    <body name="grasp_cylinder" pos="0 0 -0.05" quat="0.707107 0.707107 0 0" gravcomp="1">
+      <joint type="free"/>
+      <geom name="grasp_cylinder_geom" size="0.027 0.032" type="cylinder" friction="1 1 1" density="650" rgba="0.85 0.65 0.15 1"/>
+    </body>
+  </worldbody>
+
+  <contact>
+    <exclude name="exc_ID1_rot_p1" body1="ID1_ROT" body2="ID1_PART1"/>
+    <exclude name="exc_ID1_rot_p2" body1="ID1_ROT" body2="ID1_PART2"/>
+    <exclude name="exc_ID1_p1_p2" body1="ID1_PART1" body2="ID1_PART2"/>
+    <exclude name="exc_ID2_rot_p1" body1="ID2_ROT" body2="ID2_PART1"/>
+    <exclude name="exc_ID2_rot_p2" body1="ID2_ROT" body2="ID2_PART2"/>
+    <exclude name="exc_ID2_p1_p2" body1="ID2_PART1" body2="ID2_PART2"/>
+    <exclude name="exc_ID3_rot_p1" body1="ID3_ROT" body2="ID3_PART1"/>
+    <exclude name="exc_ID3_rot_p2" body1="ID3_ROT" body2="ID3_PART2"/>
+    <exclude name="exc_ID3_p1_p2" body1="ID3_PART1" body2="ID3_PART2"/>
+  </contact>
+
+  <actuator>
+    <general name="motor_ID1_PART1" joint="ID1_PART1_joint" ctrlrange="-162 162"/>
+    <general name="motor_ID1_PART2" joint="ID1_PART2_joint" ctrlrange="-162 162"/>
+    <general name="motor_ID2_PART1" joint="ID2_PART1_joint" ctrlrange="-162 162"/>
+    <general name="motor_ID2_PART2" joint="ID2_PART2_joint" ctrlrange="-162 162"/>
+    <general name="motor_ID3_PART1" joint="ID3_PART1_joint" ctrlrange="-162 162"/>
+    <general name="motor_ID3_PART2" joint="ID3_PART2_joint" ctrlrange="-162 162"/>
+  </actuator>
+</mujoco>
